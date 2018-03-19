@@ -1,2 +1,0 @@
-# myRPG
-RPG Course
