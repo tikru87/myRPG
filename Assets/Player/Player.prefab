@@ -659,6 +659,7 @@ GameObject:
   - component: {fileID: 13615390}
   - component: {fileID: 11444856}
   - component: {fileID: 11469404}
+  - component: {fileID: 114544393687704226}
   m_Layer: 0
   m_Name: ThirdPersonController
   m_TagString: Player
@@ -1372,7 +1373,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.3824244, y: 0, z: 2.54}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 469942}
@@ -2501,8 +2502,8 @@ MonoBehaviour:
   m_JumpPower: 6
   m_GravityMultiplier: 2
   m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1
-  m_AnimSpeedMultiplier: 1
+  m_MoveSpeedMultiplier: 4
+  m_AnimSpeedMultiplier: 5
   m_GroundCheckDistance: 0.3
 --- !u!136 &13615390
 CapsuleCollider:
@@ -2710,3 +2711,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 149790}
   m_IsPrefabParent: 1
+--- !u!114 &114544393687704226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6709bceef8095ea42b1d2c2b160501b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkMoveStopRadius: 0.5
