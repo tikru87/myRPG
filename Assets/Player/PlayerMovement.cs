@@ -4,20 +4,22 @@ using UnityStandardAssets.Characters.ThirdPerson;
 
 [RequireComponent(typeof (ThirdPersonCharacter))]
 public class PlayerMovement : MonoBehaviour
-{
+{	
 	[SerializeField] float walkMoveStopRadius = 0.2f;
+	[SerializeField] float rangedAttackRadius = 5f;
 
     ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
     CameraRaycaster camRaycaster;
-    Vector3 currentClickTarget;
+    Vector3 currentDestination, clickPoint;
 
+	float stopRadius;
     bool isInDirectMode = false;
         
     private void Start()
     {
         camRaycaster = Camera.main.GetComponent<CameraRaycaster>();
         thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
-        currentClickTarget = transform.position;
+        currentDestination = transform.position;
     }
 	private void ProcessDirectMovement ()
 	{
@@ -31,34 +33,40 @@ public class PlayerMovement : MonoBehaviour
 	private void ProcressMouseMovement () // is called in FixedUpdate
 	{
 		if (Input.GetMouseButton (0)) {
-			print ("Cursor raycast hit" + camRaycaster.currentLayerHit);
+			clickPoint = camRaycaster.hit.point;
 			switch (camRaycaster.currentLayerHit) {
 			case Layer.Walkable:
-				currentClickTarget = camRaycaster.hit.point;
+				stopRadius = walkMoveStopRadius;
+				currentDestination = ShortDestination(clickPoint, stopRadius);
 				break;
 			case Layer.Enemy:
-				print ("Not moving to enemy");
+				stopRadius = rangedAttackRadius;
+				currentDestination = ShortDestination(clickPoint, stopRadius);
 				break;
 			default:
 				print ("Layer action not defined");
 				return;
 			}
 		}
-		var playerToClickPoint = currentClickTarget - transform.position;
-		if (playerToClickPoint.magnitude >= walkMoveStopRadius) {
-			thirdPersonCharacter.Move (currentClickTarget - transform.position, false, false);
+		WalkToDestination();
+	}
+
+	private void WalkToDestination()
+	{
+		var playerToClickPoint = currentDestination - transform.position;
+		if (playerToClickPoint.magnitude >= stopRadius) {
+			thirdPersonCharacter.Move (currentDestination - transform.position, false, false);
 		}
 		else {
 			thirdPersonCharacter.Move (Vector3.zero, false, false);
 		}
 	}
-
     // Fixed update is called in sync with physics
     private void FixedUpdate ()
 	{
 		if (Input.GetKeyDown (KeyCode.G)) {
 			isInDirectMode = !isInDirectMode;
-			currentClickTarget = transform.position;
+			currentDestination = transform.position;
 		}
 
 		if (isInDirectMode) {
@@ -68,5 +76,19 @@ public class PlayerMovement : MonoBehaviour
 			ProcressMouseMovement ();
 		}
     }
+	Vector3 ShortDestination(Vector3 destination, float shortening)
+	{
+		Vector3 reductionVector = (destination - transform.position).normalized * shortening;
+		return destination - reductionVector;
+	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.black;
+		Gizmos.DrawLine(transform.position, currentDestination);
+		Gizmos.DrawSphere(currentDestination,0.1f);
+		Gizmos.DrawSphere(clickPoint,0.15f);
+
+	}
 }
 

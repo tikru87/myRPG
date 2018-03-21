@@ -2710,4 +2710,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6709bceef8095ea42b1d2c2b160501b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkMoveStopRadius: 0.5
+  walkMoveStopRadius: 0.2
+  rangedAttackRadius: 2
